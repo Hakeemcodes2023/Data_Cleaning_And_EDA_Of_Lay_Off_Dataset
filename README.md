@@ -1,61 +1,89 @@
-Overview
+📌 Overview
 
-This project demonstrates data cleaning and exploratory data analysis performed entirely in SQL. The goal was to prepare a reliable, analysis-ready table and surface key insights (monthly totals, rolling totals, top companies, and common data quality issues).
+This project focuses on cleaning a layoffs dataset and performing exploratory data analysis using SQL. The goal was to transform messy raw data into a clean, reliable dataset and uncover trends such as monthly layoffs, rolling totals, and top companies.
 
-Dataset
+📂 Dataset
 
-Source: layoffs dataset (table name referenced as layoffs).
+Source: Layoffs dataset
 
-Delivered: cleaned staging table (layoffs_staging) created from the raw table.
+Raw Table: layoffs
 
-Tools
+Cleaned Table: layoffs_staging
 
-Primary: SQL Server (script uses SQL Server syntax: SELECT TOP, FORMAT, SELECT ... INTO, ROW_NUMBER(), window functions).
+Work included fixing duplicates, formatting dates, filling missing values, and preparing fields for analysis.
 
-Notes: script can be adapted for PostgreSQL/MySQL with small syntax changes.
+🛠 Tools Used
 
-Steps (what I did)
+SQL Server (script uses SQL Server functions like FORMAT, SELECT TOP, ROW_NUMBER())
 
-Created a staging copy of the raw table for safe cleaning (SELECT ... INTO layoffs_staging).
+Easily adaptable to PostgreSQL/MySQL with small syntax changes.
 
-Duplicate removal using ROW_NUMBER() windowing to identify and remove duplicates.
+🔧 What I Did (Steps)
+1️⃣ Create a Staging Table
 
-Standardization and formatting (e.g., formatted date values with FORMAT([date], 'MM-dd-yyyy')).
+Made a safe working copy of the raw data:
+SELECT * INTO layoffs_staging FROM layoffs
 
-Null / blank handling — identified NULL or empty fields (industry, totals, percentages) and updated values when possible.
+2️⃣ Remove Duplicates
 
-Backfill from other rows — used self-joins to fill missing industry values where another row for the same company had the field populated.
+Used ROW_NUMBER() to identify and delete duplicate records.
 
-Calculated aggregated metrics for EDA:
+3️⃣ Clean & Standardize Data
 
-Monthly totals (FORMAT([date],'MM-yyyy') + SUM(total_laid_off))
+Formatted dates
 
-Monthly grouping and MONTH()/YEAR() aggregations
+Removed blank strings
 
-Rolling totals (CTE with MonthKey and cumulative sums)
+Fixed inconsistent values
 
-Top-N analysis (top companies by layoffs)
+Handled NULLs and filled missing fields when possible
 
-Results / Key Insights (example outputs)
+4️⃣ Backfill Missing Industry Values
 
-Cleaned, analysis-ready layoffs_staging table with duplicates removed and key fields standardized.
+Joined company data to fill in missing industry fields using other rows from the same company.
 
-Monthly layoff trends and rolling totals identify peak months.
+5️⃣ Exploratory Data Analysis (EDA)
 
-Top companies by total layoffs (Top 5 listing) for quick business insights.
+Monthly totals (FORMAT([date], 'MM-yyyy'))
 
-Identified rows with missing critical fields for manual review.
+Layoffs by month/year
 
-How to Run (quick)
+Rolling totals with window functions
 
-Open the SQL script Data Cleaning and EDA Project.sql.
+Top 5 companies with highest layoffs
 
-Run it in SQL Server Management Studio (SSMS) or another SQL Server client connected to the database containing the layoffs table.
+📊 Results
 
-Inspect the created table layoffs_staging and the output queries (aggregations, rolling totals, top-N).
+✔️ Clean, analysis-ready dataset
 
-If using PostgreSQL/MySQL, replace SELECT TOP, FORMAT, and any SQL Server-specific functions with the equivalent syntax (e.g., LIMIT, TO_CHAR, date functions) before running.
+✔️ Duplicate-free staging table
 
-Files included
+✔️ Clear monthly layoff trends
 
-Data Cleaning and EDA Project.sql — full SQL script with cleaning logic, EDA queries and example aggregations.
+✔️ Rolling totals showing long-term patterns
+
+✔️ Quick insights into top companies impacted
+
+✔️ Identified remaining missing data for further review
+
+▶️ How to Run the Project
+
+Open Data Cleaning and EDA Project.sql in SQL Server Management Studio (SSMS) or any SQL Server-compatible editor.
+
+Ensure the raw table layoffs exists in your database.
+
+Run the script top-to-bottom:
+
+Staging table creation
+
+Data cleaning
+
+EDA queries
+
+View results in the output grid for each analysis section.
+
+(Optional) Modify syntax slightly to run in PostgreSQL or MySQL.
+
+📁 Files Included
+
+Data Cleaning and EDA Project.sql — full cleaning workflow + EDA queries.
